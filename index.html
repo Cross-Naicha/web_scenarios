@@ -10,9 +10,10 @@
 <header><a class="brand" href="index.html">GLOOMHAVEN <span>GUÍA DE PREPARACIÓN</span></a><span class="edition">Tu próxima aventura empieza acá</span></header>
 <main>
 <section class="intro"><p class="eyebrow">ANTES DE ABRIR LA PRIMERA PUERTA</p><h1>Todo listo.<br><em>Que empiece la aventura.</em></h1><p>Elegí un escenario y reuní los componentes que necesitás para jugar.</p></section>
-<section class="controls" aria-label="Filtros"><label>Escenario<select id="scenario"></select></label><label>Buscar componente<input id="search" type="search" placeholder="Ej. Bandit, Table, Trap…"></label><label>Tipo de componente<select id="type"><option value="">Todos los tipos</option></select></label><button id="reset">Limpiar marcas</button></section>
+<section class="controls" aria-label="Filtros"><label>Escenario<select id="scenario"></select></label><label>Buscar componente<input id="search" type="search" placeholder="Ej. Bandit, Table, Trap…"></label><label>Tipo de componente<select id="type"><option value="">Todos los tipos</option></select></label><label>Ordenar por<select id="order"><option value="type">Tipo de componente</option><option value="bag">Bolsa</option></select></label><button id="reset">Limpiar marcas</button></section>
 <section class="summary"><div><p class="eyebrow">LISTA DE PREPARACIÓN</p><h2 id="title"></h2></div><div class="progress"><span id="progress"></span><progress id="bar" value="0" max="1"></progress></div></section>
 <p class="hint">Marcá los componentes a medida que los preparás. Las cantidades corresponden a las piezas disponibles en la base; cuando no se indica cantidad, consultá el plano del escenario.</p>
+<section class="bags-summary" aria-label="Bolsas necesarias"><h3>Bolsas que necesitás</h3><div id="bags" class="bag-list"></div><p id="bags-note"></p></section>
 <div id="groups"></div><p id="empty" hidden>No hay componentes que coincidan con estos filtros.</p>
 <footer>Datos de glumthings · v_scenarios <span>Las marcas se guardan en este navegador.</span></footer>
 </main>

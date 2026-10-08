@@ -1,20 +1,133 @@
 <!doctype html>
 <html lang="es">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gloomhaven · Preparar escenario</title>
-<link rel="stylesheet" href="styles.css">
-<script src="scenarios-data.js" defer></script><script src="app.js" defer></script>
-</head>
-<body>
-<header><a class="brand" href="index.html">GLOOMHAVEN <span>GUÍA DE PREPARACIÓN</span></a><span class="edition">Tu próxima aventura empieza acá</span></header>
-<main>
-<section class="intro"><p class="eyebrow">ANTES DE ABRIR LA PRIMERA PUERTA</p><h1>Todo listo.<br><em>Que empiece la aventura.</em></h1><p>Elegí un escenario y reuní los componentes que necesitás para jugar.</p></section>
-<section class="controls" aria-label="Filtros"><label>Escenario<select id="scenario"></select></label><label>Buscar componente<input id="search" type="search" placeholder="Ej. Bandit, Table, Trap…"></label><label>Tipo de componente<select id="type"><option value="">Todos los tipos</option></select></label><label>Ordenar por<select id="order"><option value="type">Tipo de componente</option><option value="bag">Bolsa</option></select></label><button id="reset">Limpiar marcas</button></section>
-<section class="summary"><div><p class="eyebrow">LISTA DE PREPARACIÓN</p><h2 id="title"></h2></div><div class="progress"><span id="progress"></span><progress id="bar" value="0" max="1"></progress></div></section>
-<p class="hint">Marcá los componentes a medida que los preparás. Las cantidades corresponden a las piezas disponibles en la base; cuando no se indica cantidad, consultá el plano del escenario.</p>
-<section class="bags-summary" aria-label="Bolsas necesarias"><h3>Bolsas que necesitás</h3><div id="bags" class="bag-list"></div><p id="bags-note"></p></section>
-<div id="groups"></div><p id="empty" hidden>No hay componentes que coincidan con estos filtros.</p>
-<footer>Datos de glumthings · v_scenarios <span>Las marcas se guardan en este navegador.</span></footer>
-</main>
-</body></html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gloomhaven · Preparar escenario</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="scenarios-data.js" defer></script>
+    <script src="images-data.js" defer></script>
+    <script src="extra-components.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="index.html"
+        >GLOOMHAVEN <span>GUÍA DE PREPARACIÓN</span></a
+      >
+      <div class="section-switch" role="tablist" aria-label="Sección">
+        <span class="switch-slider" aria-hidden="true"></span>
+        <button id="scenario-tab" type="button" role="tab" aria-selected="true" aria-controls="scenario-panel">Escenario</button>
+        <button id="level-tab" type="button" role="tab" aria-selected="false" aria-controls="level-panel" tabindex="-1">Nivel</button>
+      </div>
+    </header>
+    <main id="scenario-panel" role="tabpanel" aria-labelledby="scenario-tab">
+      <section class="intro">
+        <p class="eyebrow">ANTES DE ABRIR LA PRIMERA PUERTA</p>
+        <h1>Los GolOsos</h1>
+        <p>
+          Elegí un escenario y reuní los componentes que necesitás para jugar.
+        </p>
+      </section>
+      <section class="controls" aria-label="Filtros">
+        <label>Escenario<input id="scenario" type="text" inputmode="numeric" pattern="[0-9]+" enterkeyhint="done" autocomplete="off" aria-describedby="scenario-error" /><span id="scenario-error" role="status" hidden></span></label
+        ><label
+          >Tipo de componente<select id="type">
+            <option value="">Todos los tipos</option>
+          </select></label
+        ><button id="reset">Limpiar marcas</button>
+      </section>
+      <details class="extra-panel" open>
+        <summary>Buscar y agregar componentes</summary>
+        <p>Buscá en todo el inventario. Agregá los componentes que necesites al escenario elegido.</p>
+        <label>Buscar componente<input id="search" type="search" placeholder="Nombre, reverso, ID o bolsa…" /></label>
+        <div id="catalog-results" class="catalog-results"></div>
+      </details>
+      <details class="preparation-section" open>
+        <summary class="preparation-heading">
+          <span class="eyebrow">LISTA DE PREPARACIÓN</span>
+          <h2 id="title"></h2>
+        </summary>
+      <section class="summary">
+        <label class="preparation-order">
+          Ordenar por
+          <select id="order">
+            <option value="bag" selected>Bolsa</option>
+            <option value="type">Tipo de componente</option>
+          </select>
+        </label>
+        <div class="progress">
+          <span id="progress"></span
+          ><progress id="bar" value="0" max="1"></progress>
+        </div>
+      </section>
+      <p class="hint">
+        Marcá los componentes a medida que los preparás. Las cantidades
+        corresponden a las piezas disponibles en la base; cuando no se indica
+        cantidad, consultá el plano del escenario.
+      </p>
+      <details class="bags-summary" aria-label="Bolsas necesarias" open>
+        <summary>Bolsas que necesitás</summary>
+        <div id="bags" class="bag-list"></div>
+        <p id="bags-note"></p>
+      </details>
+      <div id="groups"></div>
+      <p id="empty" hidden>
+        No hay componentes que coincidan con estos filtros.
+      </p>
+      </details>
+      <details class="extra-panel">
+        <summary>Agregar puertas y corredores</summary>
+        <p>Buscá por nombre, tamaño o bolsa. Se agregan al escenario actual y se guardan en este navegador.</p>
+        <label>Buscar puerta o corredor<input id="extra-search" type="search" placeholder="Ej. Wood, Earth, bolsa 12…" /></label>
+        <div id="extra-results"></div>
+      </details>
+      <footer>
+        Datos de glumthings · v_scenarios
+        <span>Las marcas se guardan en este navegador.</span>
+      </footer>
+    </main>
+    <main id="level-panel" role="tabpanel" aria-labelledby="level-tab" hidden>
+      <section class="intro">
+        <p class="eyebrow">GLOOMHAVEN</p>
+        <h1>Nivel</h1>
+        <p>Ingresá los niveles de los personajes. Dejá vacíos los espacios que no uses.</p>
+      </section>
+      <section class="level-controls">
+        <div class="party-inputs">
+          <div class="party-member"><label>Nombre<input class="party-name" type="text" list="party-names" placeholder="Elegí o escribí un nombre" maxlength="60" aria-label="Nombre del primer personaje" /></label><label>Nivel<input class="party-level" type="number" min="1" max="9" step="1" inputmode="numeric" placeholder="1–9" aria-label="Nivel del primer personaje" /></label></div>
+          <div class="party-member"><label>Nombre<input class="party-name" type="text" list="party-names" placeholder="Elegí o escribí un nombre" maxlength="60" aria-label="Nombre del segundo personaje" /></label><label>Nivel<input class="party-level" type="number" min="1" max="9" step="1" inputmode="numeric" placeholder="1–9" aria-label="Nivel del segundo personaje" /></label></div>
+          <div class="party-member"><label>Nombre<input class="party-name" type="text" list="party-names" placeholder="Elegí o escribí un nombre" maxlength="60" aria-label="Nombre del tercer personaje" /></label><label>Nivel<input class="party-level" type="number" min="1" max="9" step="1" inputmode="numeric" placeholder="1–9" aria-label="Nivel del tercer personaje" /></label></div>
+          <div class="party-member"><label>Nombre<input class="party-name" type="text" list="party-names" placeholder="Elegí o escribí un nombre" maxlength="60" aria-label="Nombre del cuarto personaje" /></label><label>Nivel<input class="party-level" type="number" min="1" max="9" step="1" inputmode="numeric" placeholder="1–9" aria-label="Nivel del cuarto personaje" /></label></div>
+          <datalist id="party-names"></datalist>
+        </div>
+        <label class="difficulty-label">Dificultad<select id="difficulty"><option value="-1">Fácil (−1)</option><option value="0" selected>Normal (+0)</option><option value="1">Difícil (+1)</option><option value="2">Muy difícil (+2)</option></select></label>
+      </section>
+      <div id="level-result" class="level-result" role="status" aria-live="polite">Ingresá los niveles para calcular la fila correspondiente.</div>
+      <div class="level-table-wrap">
+        <table class="level-table">
+          <caption>Valores por nivel de escenario</caption>
+          <thead><tr><th scope="col">Nivel de escenario</th><th scope="col">Nivel de monstruos</th><th scope="col">Conversión de oro</th><th scope="col">Daño de trampas</th><th scope="col">Experiencia adicional</th></tr></thead>
+          <tbody id="level-table-body"></tbody>
+        </table>
+      </div>
+      <p class="hint">Nivel normal = promedio de niveles ÷ 2, redondeado hacia arriba. La dificultad ajusta ese resultado. El nivel del escenario debe estar entre 0 y 7 y no puede cambiar una vez comenzado.</p>
+      <section class="level-controls scenario-notes">
+        <h2>Trampas y tesoro</h2>
+        <p class="hint">Anotaciones del escenario elegido en Escenario. Podés combinar varios efectos en una misma trampa.</p>
+        <p id="notes-scenario" class="eyebrow"></p>
+        <div id="trap-list"></div>
+        <label class="treasure-label">Número del tesoro<input id="treasure-number" type="text" inputmode="numeric" pattern="[0-9]+" placeholder="Ej. 07" autocomplete="off" /></label>
+        <button id="share-level-whatsapp" type="button">Compartir por WhatsApp</button>
+        <p id="share-level-note" class="hint" role="status"></p>
+      </section>
+    </main>
+    <dialog id="component-dialog" aria-labelledby="component-title">
+      <button id="component-close" type="button" autofocus>Cerrar</button>
+      <h2 id="component-title"></h2>
+      <img id="component-image" alt="" hidden />
+      <p id="component-image-note" hidden>Imagen todavía no disponible.</p>
+      <dl id="component-details"></dl>
+    </dialog>
+  </body>
+</html>
